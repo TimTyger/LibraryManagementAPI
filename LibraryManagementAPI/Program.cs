@@ -1,3 +1,6 @@
+using LibraryAPI_Service.Enums;
+using LibraryAPI_Service.Interfaces;
+using LibraryAPI_Service.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -21,10 +24,15 @@ builder.Services.AddAuthentication(options =>
     googleOptions.ClientSecret = Configuration["Google:client_secret"] ?? "";
 });
 builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("AppOwner", policy => policy.RequireRole("AppOwner"))
-    .AddPolicy("Customer", policy => policy.RequireRole("Customer"));
+    .AddPolicy("AppOwner", policy => policy.RequireRole(Roles.AppOwner.ToString()))
+    .AddPolicy("Customer", policy => policy.RequireRole(Roles.Customer.ToString()));
+
+
+builder.Services.AddScoped<IAuthService, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

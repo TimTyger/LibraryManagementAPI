@@ -5,6 +5,10 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryManagementAPI", "LibraryManagementAPI\LibraryManagementAPI.csproj", "{7510BE9D-E37F-4B6F-9D41-EBAED2B89432}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryApi_Repository", "LibraryApi_Repository\LibraryApi_Repository.csproj", "{D54EC957-A173-48ED-8735-5D2A7C5926EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI-Service", "LibraryAPI-Service\LibraryAPI-Service.csproj", "{562686D0-F410-4229-951E-53BB38C4E0CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7510BE9D-E37F-4B6F-9D41-EBAED2B89432}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7510BE9D-E37F-4B6F-9D41-EBAED2B89432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7510BE9D-E37F-4B6F-9D41-EBAED2B89432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D54EC957-A173-48ED-8735-5D2A7C5926EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54EC957-A173-48ED-8735-5D2A7C5926EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54EC957-A173-48ED-8735-5D2A7C5926EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D54EC957-A173-48ED-8735-5D2A7C5926EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{562686D0-F410-4229-951E-53BB38C4E0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{562686D0-F410-4229-951E-53BB38C4E0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{562686D0-F410-4229-951E-53BB38C4E0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{562686D0-F410-4229-951E-53BB38C4E0CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
