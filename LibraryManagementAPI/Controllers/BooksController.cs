@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace LibraryManagementAPI.Controllers
@@ -17,7 +18,7 @@ namespace LibraryManagementAPI.Controllers
     /// Book controller
     /// </summary>
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
@@ -46,7 +47,7 @@ namespace LibraryManagementAPI.Controllers
         /// <param name="searchString">The search string to filter books by title.</param>
         /// <param name="pager">Pagination details</param>
         /// <returns>A list of books that match the search criteria.</returns>
-        [HttpGet("getbooks"), /*Authorize(Policy = "Customer")*/]
+        [HttpGet("getbooks")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(GenericResponse<List<BooksDto>>))]
         public async Task<ActionResult> GetBooks([FromQuery] string? searchString, [FromQuery] Pager pager)
         {
