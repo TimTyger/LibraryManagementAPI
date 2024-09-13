@@ -8,8 +8,8 @@ namespace LibraryApi_Repository.Enums
 {
     public enum BookStatus
     {
-        Available=0,
-        Reserved =1,
-        Borrowed=2
+        Available = 0,
+        Reserved = 1,
+        Borrowed = 2
     }
 }

@@ -41,19 +41,20 @@ namespace LibraryManagementAPI.Controllers
         }
 
         /// <summary>
-        /// To get books, optionally searchstring can be used to search by book title
+        /// To get paginated books, optionally searchstring can be used to search by book title
         /// </summary>
         /// <param name="searchString">The search string to filter books by title.</param>
+        /// <param name="pager">Pagination details</param>
         /// <returns>A list of books that match the search criteria.</returns>
-        [HttpGet("getbooks"), Authorize(Policy = "Customer")]
+        [HttpGet("getbooks"), /*Authorize(Policy = "Customer")*/]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(GenericResponse<List<BooksDto>>))]
-        public async Task<ActionResult> GetBooks([FromQuery] string? searchString)
+        public async Task<ActionResult> GetBooks([FromQuery] string? searchString, [FromQuery] Pager pager)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var books = await _bookService.GetBooks(searchString);
+            var books = await _bookService.GetBooks(searchString,pager);
             return Ok(books);
         }
         /// <summary>

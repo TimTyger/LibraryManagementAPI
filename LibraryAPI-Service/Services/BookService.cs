@@ -43,11 +43,11 @@ namespace LibraryAPI_Service.Services
             return new GenericResponse<dynamic>(true, "SUCCESS", null);
         }
 
-        public Task<GenericResponse<List<BooksDto>>> GetBooks(string? searchString)
+        public Task<GenericResponse<BookListDto>> GetBooks(string? searchString, Pager pager)
         {
-            var books = _bookRepo.Find(x=>x.Title.ToLower().Contains(searchString??"") && !x.IsDeleted);
-            bool status = books.Any();
-            return Task.FromResult(new GenericResponse<List<BooksDto>>(true, status?"SUCCESS":"No book(s) found", _mapper.Map<List<BooksDto>>(books)));
+            var books = _bookRepo.GetPagedList(x=>(x.Title.Contains(searchString) || string.IsNullOrEmpty(searchString)) && !x.IsDeleted, pager.PageNumber, pager.PageSize);
+            bool status = books.Items.Any();
+            return Task.FromResult(new GenericResponse<BookListDto>(true, status?"SUCCESS":"No book(s) found",new BookListDto(_mapper.Map<List<BooksDto>>(books.Items), books.TotalCount,books.PageNumber,books.PageSize)));
         }
 
         public async Task<GenericResponse<dynamic>> ReturnBook(int bookId)

@@ -1,5 +1,6 @@
 ﻿using LibraryApi_Repository.Data;
 using LibraryApi_Repository.Interfaces;
+using LibraryApi_Repository.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -37,6 +38,19 @@ namespace LibraryApi_Repository.Repositories
         public IQueryable<T> Find(Expression<Func<T, bool>> expression)
         {
             return _context.Set<T>().Where(expression);
+        }
+        public IPagerResponseDto<IQueryable<T>> GetPagedList(Expression<Func<T, bool>> expression, int pageNumber, int pageSize)
+        {
+            var resp = _context.Set<T>().Where(expression);
+            var count = resp.Count();
+            var pagedResp = resp.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            return new PagerRespDto<T>
+            {
+                Items = pagedResp,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalCount = count
+            };
         }
 
         public IQueryable<T> GetAll()

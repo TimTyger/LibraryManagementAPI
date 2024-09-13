@@ -19,4 +19,19 @@ namespace LibraryAPI_Service.Models.ResponseDto
                 .ForMember(x => x.Status, i => i.MapFrom(a => a.Status.ToString()));
         }
     }
+
+    public class BookListDto : IPagerResponse
+    {
+        public BookListDto(List<BooksDto> books, int totaCount, int pageNumber, int pageSize)
+        {
+            TotalCount = totaCount;
+            PageNumber = pageNumber;
+            PageSize = pageSize;
+            Books = books;
+        }
+        public int TotalCount { get ; set ; }
+        public int PageNumber { get ; set ; }
+        public int PageSize { get ; set ; }
+        public List<BooksDto> Books { get; set; } = [];
+    }
 }

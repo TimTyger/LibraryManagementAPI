@@ -1,6 +1,7 @@
 using AutoMapper;
 using LibraryApi_Repository.Data;
 using LibraryApi_Repository.Interfaces;
+using LibraryApi_Repository.Models;
 using LibraryApi_Repository.Repositories;
 using LibraryAPI_Service;
 using LibraryAPI_Service.Enums;
