@@ -1,9 +1,9 @@
 ﻿using LibraryApi_Repository.Entities;
 
-namespace LibraryAPI_Service.Services
+namespace LibraryAPI_Service.Interfaces
 {
     public interface ITokenService
     {
-        string GenerateToken(User user);
+        Task GenerateToken(User user);
     }
 }

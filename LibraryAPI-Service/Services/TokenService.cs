@@ -1,4 +1,9 @@
 ﻿using LibraryApi_Repository.Entities;
+using LibraryAPI_Service.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,34 +16,24 @@ using System.Threading.Tasks;
 
 namespace LibraryAPI_Service.Services
 {
-    internal class TokenService: ITokenService
+    public class TokenService: ITokenService
     {
         private readonly IConfiguration _configuration;
-        public TokenService(IConfiguration configuration)
+        private readonly IHttpContextAccessor _httpContext;
+        public TokenService(IConfiguration configuration, IHttpContextAccessor httpContext)
         {
             _configuration  = configuration;
+            _httpContext = httpContext;
         }
-        public string GenerateToken(User user)
+        public async Task GenerateToken(User user)
         {
-            var claims = new List<Claim>
-            {
-                new(JwtRegisteredClaimNames.Sub, user.Email),
-                new(JwtRegisteredClaimNames.Email, user.Email),
-                new(ClaimTypes.Name, user.Name??""),
-                new(ClaimTypes.Role, user.Role)
-            };
+            
+            var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, user.Name??""));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+            claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            await _httpContext.HttpContext!.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
         }
 
     }

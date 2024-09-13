@@ -1,4 +1,4 @@
-﻿using LibraryAPI_Service.Models;
+﻿using LibraryAPI_Service.Models.ResponseDto;
 using Microsoft.AspNetCore.Authentication;
 
 namespace LibraryAPI_Service.Interfaces

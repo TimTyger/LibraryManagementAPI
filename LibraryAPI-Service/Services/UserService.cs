@@ -8,8 +8,9 @@ using LibraryApi_Repository.Entities;
 using LibraryApi_Repository.Interfaces;
 using LibraryAPI_Service.Enums;
 using LibraryAPI_Service.Interfaces;
-using LibraryAPI_Service.Models;
+using LibraryAPI_Service.Models.ResponseDto;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.Extensions.Configuration;
 
 namespace LibraryAPI_Service.Services
 {
@@ -17,9 +18,14 @@ namespace LibraryAPI_Service.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
-        public UserService(IUserRepository userRepository)
+        private readonly IConfiguration _config;
+        private string[] adminUsers;
+        public UserService(IUserRepository userRepository, ITokenService tokenService, IConfiguration config)
         {
             _userRepository = userRepository;
+            _tokenService = tokenService;
+            _config = config;
+            adminUsers = _config["AppOwners"]!.Split(',');
         }
 
         public async Task<GenericResponse<string>> Login(AuthenticateResult authenticateResult)
@@ -38,19 +44,20 @@ namespace LibraryAPI_Service.Services
             {
                 user = new User
                 {
-                    Email = email,
-                    Name = name,
-                    Role = Roles.Customer.ToString()
-                });
-                await SignUp(emailClaim, nameClaim);
+                    Email = emailClaim,
+                    Name = nameClaim,
+                    Role = adminUsers.Contains(emailClaim)?Roles.AppOwner.ToString():Roles.Customer.ToString()
+                };
+                await SignUp(user);
             }
-            if (user!.IsDeleted) { }
-
+            else if (user!.IsDeleted) { return new GenericResponse<string>(false, "Kindly contact system admin", ""); }
+            await _tokenService.GenerateToken(user);
+            return new GenericResponse<string>(true, "Login Successful", "");
         }
         
         private async Task SignUp(User user)
         {
-             await _userRepository.AddUser(user) ;
+             await _userRepository.Add(user) ;
         }
     }
 }

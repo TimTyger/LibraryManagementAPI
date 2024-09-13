@@ -10,13 +10,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryApi_Repository.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository :GenericRepository<User>, IUserRepository
     {
-        private readonly LibraryApiContext _context;
-
-        public UserRepository(LibraryApiContext context)
+        public UserRepository(LibraryApiContext context):base(context) 
         {
-            _context = context;
+            
         }
 
         public async Task<User?> GetUserByEmailAsync(string emailClaim)
@@ -28,12 +26,6 @@ namespace LibraryApi_Repository.Repositories
             return await _context.Users.FirstOrDefaultAsync(x=>x.Email == emailClaim && x.IsDeleted==false);
         }
 
-        public  async Task<User?> AddUser(User user)
-        {
-            var entityEntry = await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-            return entityEntry.Entity;
-        }
 
     }
 }
